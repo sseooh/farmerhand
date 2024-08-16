@@ -60,6 +60,11 @@
             padding: 15px 0;
             transition: background-color 0.3s;
         }
+        .board-item a {
+            display: block;
+            text-decoration: none; /* 밑줄 제거 */
+            color: inherit;
+        }
         .board-item:last-child {
             border-bottom: none;
         }
@@ -128,7 +133,7 @@
 
 <div class="content">
     <div class="board">
-        <h2>귀농귀촌 지원 소식</h2>
+        <h2>농촌귀촌 지원 소식</h2>
         <form class="search-form" th:action="@{/policy-board}" method="get">
             <input type="text" name="keyword" placeholder="검색어를 입력하세요" th:value="${keyword}">
             <button type="submit">검색</button>
@@ -140,8 +145,10 @@
 
         <div th:each="board : ${boards}">
             <div class="board-item">
-                <h3 th:text="${board.title}">프로그램\ 제목</h3>
-                <p th:text="${board.content}">프로그램 설명이 여기에 표시됩니다.</p>
+                <a th:href="@{/board/{id}(id=${board.id})}">
+                    <h3 th:text="${board.title}">프로그램 제목</h3>
+                    <p th:text="${board.content}">프로그램 설명이 여기에 표시됩니다.</p>
+                </a>
             </div>
         </div>
     </div>

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -55,5 +56,12 @@ public class BoardController {
         model.addAttribute("boardType", "정책");
         model.addAttribute("keyword", keyword); // 검색어를 다시 폼에 표시하기 위함
         return "policy-board"; // policy-board.html 렌더링
+    }
+
+    @GetMapping("/board/{id}")
+    public String viewBoard(@PathVariable Long id, Model model) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid board ID: " + id));
+        model.addAttribute("board", board);
+        return "board-detail"; // board-detail.html 렌더링
     }
 }
