@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>귀농귀촌 지원 소식</title>
+    <title>커뮤니티 게시글 상세 보기</title>
     <style>
         body {
             margin: 0;
@@ -39,7 +39,7 @@
             background-color: #f4f4f4;
             text-align: center;
         }
-        .board {
+        .board-detail {
             background-color: white;
             padding: 30px;
             border-radius: 15px;
@@ -48,71 +48,55 @@
             margin: 0 auto;
             text-align: left;
         }
-        .board h2 {
-            margin-bottom: 30px;
+        .board-detail h2 {
+            margin-bottom: 20px;
             color: #333;
-            text-align: center;
             font-size: 28px;
             font-weight: bold;
         }
-        .board-item {
-            border-bottom: 1px solid #ddd;
-            padding: 15px 0;
-            transition: background-color 0.3s;
-        }
-        .board-item a {
-            display: block;
-            text-decoration: none; /* 밑줄 제거 */
-            color: inherit;
-        }
-        .board-item:last-child {
-            border-bottom: none;
-        }
-        .board-item:hover {
-            background-color: #f9f9f9;
-        }
-        .board-item h3 {
-            margin: 0;
-            color: #03a9f4;
-            font-size: 20px;
-            font-weight: bold;
-        }
-        .board-item p {
-            margin: 8px 0;
+        .board-detail p {
             color: #666;
             font-size: 16px;
+            line-height: 1.6;
         }
-        form.search-form {
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: center;
+        .comment-section {
+            margin-top: 30px;
         }
-        form.search-form input[type="text"] {
-            width: 70%;
-            padding: 15px;
-            border: 1px solid #ccc;
-            border-radius: 50px;
+        .comment-section .comment {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+            color: #666;
             font-size: 16px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s;
+            line-height: 1.6;
         }
-        form.search-form input[type="text"]:focus {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            outline: none;
+        .comment-section .comment:last-child {
+            border-bottom: none;
         }
-        form.search-form button {
-            padding: 15px 30px;
+        .comment-section .comment-form {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+        .comment-section .comment-form textarea {
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            width: 100%;
+        }
+        .comment-section .comment-form button {
+            padding: 15px;
             background-color: #03a9f4;
             color: white;
             border: none;
-            border-radius: 50px;
+            border-radius: 5px;
             cursor: pointer;
-            margin-left: 10px;
             font-size: 16px;
             transition: background-color 0.3s, transform 0.3s;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        form.search-form button:hover {
+        .comment-section .comment-form button:hover {
             background-color: #0288d1;
             transform: translateY(-3px);
         }
@@ -125,32 +109,31 @@
 
 <nav>
     <a th:href="@{/home}">홈</a>
+    <a th:href="@{/community-board}">커뮤니티 게시판</a>
     <a th:href="@{/program-board}">귀농귀촌 체험 소식</a>
     <a th:href="@{/policy-board}">귀농귀촌 지원 소식</a>
     <a href="#">스마트팜 선배 매칭</a>
-    <a th:href="@{/community}">자유 게시판</a>
+    <a href="#">AI</a>
 </nav>
 
 <div class="content">
-    <div class="board">
-        <h2>농촌귀촌 지원 소식</h2>
-        <form class="search-form" th:action="@{/policy-board}" method="get">
-            <input type="text" name="keyword" placeholder="검색어를 입력하세요" th:value="${keyword}">
-            <button type="submit">검색</button>
-        </form>
+    <div class="board-detail">
+        <h2 th:text="${community.title}">커뮤니티 제목</h2>
+        <p th:text="${community.content}">커뮤니티 내용이 여기에 표시됩니다.</p>
 
-        <div th:if="${boards.empty}">
-            <p>게시물이 없습니다.</p>
-        </div>
-
-        <div th:each="board : ${boards}">
-            <div class="board-item">
-                <a th:href="@{/board/{id}(id=${board.id})}">
-                    <h3 th:text="${board.title}">프로그램 제목</h3>
-                    <p th:text="${board.content}">프로그램 설명이 여기에 표시됩니다.</p>
-                </a>
+        <div class="comment-section">
+            <h3>댓글</h3>
+            <div th:each="comment : ${comments}" class="comment">
+                <p th:text="${comment.content}">댓글 내용</p>
             </div>
+
+            <form class="comment-form" th:action="@{/community/{communityId}/comments(communityId=${community.id})}" method="post">
+                <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
+                <button type="submit">댓글 달기</button>
+            </form>
         </div>
+
+        <a class="back-link" href="javascript:history.back()">뒤로 가기</a>
     </div>
 </div>
 </body>
