@@ -29,7 +29,7 @@ public class UserController {
         Boolean confirm = userService.login(user.getEmail(), user.getPassword());
 
         if (confirm) {
-            return "redirect:/";
+            return "home";
         } else {
             model.addAttribute("error", "Invalid email or password"); // 에러 메시지 추가
             return "login"; // 다시 로그인 페이지로 이동
