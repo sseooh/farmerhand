@@ -41,12 +41,8 @@ public class Comment {
         return community;
     }
 
-    public void setWorried(Community community) {
+    public void setCommunity(Community community) {
         this.community = community;
-    }
-
-    public Users getUser() {
-        return user;
     }
 
     public void setUser(Users user) {

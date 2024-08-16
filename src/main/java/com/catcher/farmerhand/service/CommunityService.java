@@ -1,6 +1,8 @@
 package com.catcher.farmerhand.service;
 
+import com.catcher.farmerhand.domain.Comment;
 import com.catcher.farmerhand.domain.Community;
+import com.catcher.farmerhand.repository.CommentRepository;
 import com.catcher.farmerhand.repository.CommunityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ import java.util.Optional;
 public class CommunityService {
 
     private final CommunityRepository communityRepository;
+    private final CommentRepository commentRepository;
 
     @Autowired
-    public CommunityService(CommunityRepository communityRepository) {
+    public CommunityService(CommunityRepository communityRepository, CommentRepository commentRepository) {
         this.communityRepository = communityRepository;
+        this.commentRepository = commentRepository;
     }
 
     public List<Community> getAllCommunities() {
@@ -48,5 +52,18 @@ public class CommunityService {
 
     public List<Community> searchCommunities(String keyword) {
         return communityRepository.findByTitleContainingOrContentContaining(keyword, keyword);
+    }
+
+    public List<Comment> getCommentsByCommunity(Community community) {
+        return commentRepository.findByCommunity(community);
+    }
+
+    public Comment addCommentToCommunity(Community community, Comment comment) {
+        comment.setCommunity(community);
+        return commentRepository.save(comment);
+    }
+
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
     }
 }
