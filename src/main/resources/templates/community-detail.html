@@ -79,26 +79,43 @@
         }
         .comment-section .comment-form textarea {
             padding: 15px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 10px;
             font-size: 16px;
             width: 100%;
+            box-sizing: border-box;
+            resize: vertical;
+            min-height: 80px;
         }
         .comment-section .comment-form button {
             padding: 15px;
             background-color: #03a9f4;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
             transition: background-color 0.3s, transform 0.3s;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            align-self: flex-end;
+            width: 150px;
         }
         .comment-section .comment-form button:hover {
             background-color: #0288d1;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #03a9f4;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: #0288d1;
         }
     </style>
 </head>
@@ -112,8 +129,8 @@
     <a th:href="@{/community-board}">커뮤니티 게시판</a>
     <a th:href="@{/program-board}">귀농귀촌 체험 소식</a>
     <a th:href="@{/policy-board}">귀농귀촌 지원 소식</a>
-    <a href="#">스마트팜 선배 매칭</a>
-    <a href="#">AI</a>
+    <a th:href="@{/mentor-matching}">스마트팜 선배 매칭</a>
+    <a th:href="@{/community-board}">자유 게시판</a>
 </nav>
 
 <div class="content">
@@ -123,11 +140,17 @@
 
         <div class="comment-section">
             <h3>댓글</h3>
-            <div th:each="comment : ${comments}" class="comment">
+
+            <!-- 댓글이 없는 경우 -->
+            <p th:if="${comments.size() == 0}">댓글이 없습니다.</p>
+
+            <!-- 댓글이 있는 경우 -->
+            <div th:each="comment : ${comments}" class="comment" th:unless="${comments.size() == 0}">
                 <p th:text="${comment.content}">댓글 내용</p>
             </div>
 
-            <form class="comment-form" th:action="@{/community/{communityId}/comments(communityId=${community.id})}" method="post">
+            <!-- 댓글 작성 폼 -->
+            <form class="comment-form" th:action="@{/community-board/{id}/comments(id=${community.id})}" method="post">
                 <textarea name="content" placeholder="댓글을 입력하세요"></textarea>
                 <button type="submit">댓글 달기</button>
             </form>
