@@ -3,8 +3,8 @@ package com.catcher.farmerhand.domain;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
-public class User {
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+public class Users {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +16,10 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    public User() {
+    public Users() {
     }
 
-    public User(String email, String password) {
+    public Users(String email, String password) {
         super();
         this.email = email;
         this.password = password;
